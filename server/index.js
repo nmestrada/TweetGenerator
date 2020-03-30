@@ -73,18 +73,18 @@ passport.serializeUser((user, done) => {
   }
 })
 
-passport.deserializeUser((id, done) => {
-  User.findById(id)
-    .then(user => done(null, user))
-    .catch(done)
-})
+// passport.deserializeUser((id, done) => {
+//   User.findById(id)
+//     .then(user => done(null, user))
+//     .catch(done)
+// })
 
 app.get('*', function(req, res, next) {
   res.sendFile(path.join(__dirname, '..', 'public', 'index.html'))
 })
 
 const port = 8080 //3000 for heroku
-const server = app.listen(port, err => {
+app.listen(port, err => {
   if (err) throw err
   console.log('\nHTTP server patiently listening on port', port)
   //   db.sync()
