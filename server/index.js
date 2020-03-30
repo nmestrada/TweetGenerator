@@ -2,7 +2,7 @@ const path = require('path')
 const express = require('express')
 const app = express()
 const morgan = require('morgan')
-const db = require('./db/database')
+const db = require('./db')
 const session = require('express-session')
 
 /**
