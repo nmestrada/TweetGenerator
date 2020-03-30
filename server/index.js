@@ -10,7 +10,7 @@ const session = require('express-session')
  * nodemon doesn't make you restart node when you change your server code
  */
 if (process.env.NODE_ENV === 'development') {
-  require('./localSecrets') // this will mutate the process.env object with your secrets.
+  require('../secrets') // this will mutate the process.env object with your secrets.
 }
 
 // configure and create our database store
@@ -83,7 +83,7 @@ app.get('*', function(req, res, next) {
   res.sendFile(path.join(__dirname, '..', 'public', 'index.html'))
 })
 
-const port = 8080 //3000 for heroku
+const port = 1337 //3000 for heroku
 app.listen(port, err => {
   if (err) throw err
   console.log('\nHTTP server patiently listening on port', port)
