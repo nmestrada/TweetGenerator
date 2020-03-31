@@ -15,14 +15,16 @@ install:
 before_script:
   - psql -c 'create database "tweetgenerator-test";' -U postgres # remember to change this name if you change it elsewhere (e.g. package.json)
 script:
-  - npm test             # test the code
+  - npm test # test the code
   - npm run build-client # make the bundle
-
-# before_deploy:
-#   - rm -rf node_modules # omit from the tarball, since we skip cleanup
-# deploy:
-#   skip_cleanup: true # prevents travis from deleting the build
-#   provider: heroku
-#   app: YOUR-HEROKU-APP-NAME-HERE # see README
-#   api_key:
-#     secure: YOUR-***ENCRYPTED***-API-KEY-HERE # see README
+before_deploy: # omit node_modules, since we set skip_cleanup below
+  - rm -rf node_modules
+deploy: # see README for details on these keys
+  # prevents travis from deleting the build
+  skip_cleanup: true
+  provider: heroku
+  # app should be your heroku app name; see README
+  app: awesome-tweet-generator
+  # the secure key indicates an encrypted value; see README
+  api_key:
+    secure: NvP89YgSL+TV9R6OvDRElk7ezyUgUJ+EmZl+9bpOVP/4ANhnv6g5uuvDGWHMIjW0zYXxg7xY1KYMcey44wWyhdQthLLDAiEdN9CO1orR7M/sNA0zcaVTsQ9bs8ilWW1/R+DPn3EEFrUvrSsWam8bfr8t5LgARzslzttxXt4oaPW8Ud8nPTdwcHu+rKft/tOKzxiph44SDEsIOL4ZXTEUIWH25hqoksp7Ssqf6dgV0UEv549xOhfkliOeWGo/Ihx7JvQDdEhT/3dbhZnZH82HOCKR71HBaqe6ytVdKviJDQzxx1amZihHC8hI2yEi/c+L1vK6ODfo/lLMHIuJRNPLbKZWQB0/e1VsadDVXQOxT9jlELrJCPgZIebQVaemq3ZN8kpyH0xcirbNUMqCov9Nah5OZAjdP4GEuXkMOqrhStL3QOAeJqvtdshLsZ9+m//KdLkRKlNjzoe3dOv2aIf1fYOsoR5CZ12U/QvT90qLrGhAclaL+z9DLik/cFv9le4R+NW+MFBXsUjuEDCcGRyBVkvZ0P1lO6GW+9rj0zR4ShJ2Dxd6diXF/Usp637eH7MqH5ACjSCQwcuxMcbqik2lSUZ2Gl9muvlZrFy9jiTnLKoSL2nE0TuvsOO35FyLameDPIiRWEo3slDe1JBv63PleiHxVssr4SYitchzNzz8KOY=
