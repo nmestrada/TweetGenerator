@@ -1,6 +1,7 @@
 const db = require('../server/db')
 const User = require('../server/db/users')
 const Tweet = require('../server/db/tweets')
+const GeneratedTweet = require('../server/db/generatedTweets')
 
 async function seed() {
   await db.sync({force: true})
@@ -18,6 +19,10 @@ async function seed() {
       twitterName: 'dog',
       content: 'I went for a walk',
       tweetDate: 'Tue Mar 31 16:05:24 +0000 2020'
+    }),
+    GeneratedTweet.create({
+      content: 'A random tweet',
+      twitterName: 'dog'
     })
   ])
 
