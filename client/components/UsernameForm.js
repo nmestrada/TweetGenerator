@@ -1,11 +1,10 @@
 import React, {useState} from 'react'
-
+import axios from 'axios'
 const UsernameForm = () => {
   const [username, setUsername] = useState('')
-  const handleSubmit = event => {
+  const handleSubmit = async event => {
     event.preventDefault()
-    console.log('submitted!', username)
-    //ajax call to api
+    await axios.post('/api/tweets', {username})
     //clear form
     setUsername('')
   }

@@ -1,5 +1,7 @@
 const router = require('express').Router()
 const axios = require('axios')
+const Tweet = require('../db/tweets')
+//const Sequelize = require('sequelize')
 // matches GET requests to /api/tweets/
 //global constants:
 const headers = {
@@ -10,11 +12,14 @@ const headers = {
 const getReqUrl = 'https://api.twitter.com/1.1/statuses/user_timeline.json?'
 
 router.get('/', async function(req, res, next) {
-  const url =
-    'https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=realdonaldtrump&count=20&trim_user=true&tweet_mode=extended'
   try {
-    const {data} = await axios({method: 'get', url, headers})
-    res.json(data)
+    //going to have this set for realDonaldTrump
+    const response = await Tweet.findAll({
+      where: {
+        twitterName: 'realDonaldTrump'
+      }
+    })
+    res.json(response)
   } catch (err) {
     next(err)
   }
@@ -22,7 +27,27 @@ router.get('/', async function(req, res, next) {
 // matches POST requests to /api/tweets/
 router.post('/', async function(req, res, next) {
   const username = req.body.username
-  const {data} = await axios.get(getReqUrl, headers)
+  try {
+    //get req twitter api
+    const {data} = await axios({
+      method: 'get',
+      url: `${getReqUrl}screen_name=${username}&count=2trim_user=true&tweet_mode=extended`,
+      headers
+    })
+    //write it to database, data is an array
+    await Promise.all(
+      data.map(tweet =>
+        Tweet.create({
+          twitterName: tweet.user.screen_name,
+          content: tweet.full_text,
+          tweetDate: tweet.created_at
+        })
+      )
+    )
+    res.sendStatus(201)
+  } catch (err) {
+    next(err)
+  }
   //make twitter api get request
   //get response
   //add to database
