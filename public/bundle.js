@@ -496,7 +496,7 @@ function getRandomWord(word, obj) {
 }
 
 function formatSentence(text) {
-  var textArray = text.split(" ");
+  var textArray = text.split(' ');
   var length = textArray.length; // if(textArray[length-1] === "the" || textArray[length-1] === "and" || textArray[length-1] === "i"){
   //   textArray.pop();
   //   length = textArray.length;
@@ -549,7 +549,7 @@ function _generatePoem() {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
-            poem = ""; //make obj here with generateWordPairs, but this is an async function
+            poem = ''; //make obj here with generateWordPairs, but this is an async function
 
             _context4.next = 3;
             return generateWordPairs();
