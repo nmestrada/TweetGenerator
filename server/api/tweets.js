@@ -1,7 +1,7 @@
 const router = require('express').Router()
 const axios = require('axios')
 const Tweet = require('../db/tweets')
-//const Sequelize = require('sequelize')
+
 // matches GET requests to /api/tweets/
 //global constants:
 const headers = {
@@ -14,11 +14,8 @@ const getReqUrl = 'https://api.twitter.com/1.1/statuses/user_timeline.json?'
 router.get('/', async function(req, res, next) {
   try {
     //going to have this set for realDonaldTrump
-    const response = await Tweet.findAll({
-      where: {
-        twitterName: 'realDonaldTrump'
-      }
-    })
+    const response = await Tweet.findAll()
+    //const response = { 'hello': 'hello!'}
     res.json(response)
   } catch (err) {
     next(err)
@@ -34,8 +31,8 @@ router.post('/', async function(req, res, next) {
       url: `${getReqUrl}screen_name=${username}&count=2trim_user=true&tweet_mode=extended`,
       headers
     })
-    //write it to database, data is an array
-    await Promise.all(
+    console.log('after post request', data)
+    const rows = await Promise.all(
       data.map(tweet =>
         Tweet.create({
           twitterName: tweet.user.screen_name,
@@ -44,6 +41,7 @@ router.post('/', async function(req, res, next) {
         })
       )
     )
+    console.log('after tweet request', rows)
     res.sendStatus(201)
   } catch (err) {
     next(err)
@@ -51,14 +49,6 @@ router.post('/', async function(req, res, next) {
   //make twitter api get request
   //get response
   //add to database
-})
-// matches PUT requests to /api/tweets/:tweets
-router.put('/:puppyId', function(req, res, next) {
-  /* etc */
-})
-// matches DELETE requests to /api/tweets/:tweets
-router.delete('/:puppyId', function(req, res, next) {
-  /* etc */
 })
 
 module.exports = router

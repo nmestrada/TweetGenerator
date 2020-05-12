@@ -2,8 +2,7 @@ const path = require('path')
 const express = require('express')
 const app = express()
 const morgan = require('morgan')
-const db = require('./db')
-const session = require('express-session')
+const db = require('./db/index.js')
 const PORT = process.env.PORT || 1337
 
 /**
@@ -14,33 +13,6 @@ const PORT = process.env.PORT || 1337
 if (process.env.NODE_ENV === 'development') {
   require('../secrets') // this will mutate the process.env object with your secrets.
 }
-if (process.env.NODE_ENV !== 'production') require('../secrets')
-// configure and create our database store
-const SequelizeStore = require('connect-session-sequelize')(session.Store)
-const dbStore = new SequelizeStore({db: db})
-dbStore.sync()
-
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET || 'a wildly insecure secret',
-    store: dbStore,
-    resave: false,
-    saveUninitialized: false
-  })
-)
-
-const passport = require('passport')
-
-app.use(passport.initialize())
-app.use(passport.session())
-
-app.use(
-  session({
-    secret: 'winGARdium leviOHsa',
-    resave: false,
-    saveUninitialized: false
-  })
-)
 
 app.use(morgan('dev'))
 
@@ -53,7 +25,7 @@ app.use(bodyParser.urlencoded({extended: true}))
 app.use(express.static(path.join(__dirname, '..', 'public')))
 
 app.use('/api', require('./api'))
-app.use('/auth', require('./auth'))
+//app.use('/auth', require('./auth'))
 // Make sure this is right at the end of your server logic!
 // The only thing after this might be a piece of middleware to serve up 500 errors for server problems
 // (However, if you have middleware to serve up 404s, that go would before this as well)
@@ -67,20 +39,6 @@ app.use((req, res, next) => {
   }
 })
 
-passport.serializeUser((user, done) => {
-  try {
-    done(null, user.id)
-  } catch (err) {
-    done(err)
-  }
-})
-
-// passport.deserializeUser((id, done) => {
-//   User.findById(id)
-//     .then(user => done(null, user))
-//     .catch(done)
-// })
-
 app.get('*', function(req, res, next) {
   res.sendFile(path.join(__dirname, '..', 'public', 'index.html'))
 })
@@ -89,10 +47,14 @@ const port = PORT //3000 for heroku
 app.listen(port, err => {
   if (err) throw err
   console.log('\nHTTP server patiently listening on port', port)
-  //   db.sync()
-  //     .then(() => {
-  //       console.log('\nOh and btw the postgres server is totally connected, too\n')
-  //     })
+  db
+    .sync()
+    .then(() => {
+      console.log(
+        '\nOh and btw the postgres server is totally connected, too\n'
+      )
+    })
+    .catch(error => console.log(error.message))
 })
 
 app.use(function(err, req, res, next) {
