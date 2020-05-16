@@ -1,6 +1,6 @@
 const router = require('express').Router()
 const axios = require('axios')
-const {Tweet} = require('../db')
+const {Tweet} = require('../db/index')
 
 // matches GET requests to /api/tweets/
 //global constants:
@@ -16,17 +16,6 @@ router.get('/', async function(req, res, next) {
     //going to have this set for realDonaldTrump
     const response = await Tweet.findAll()
     //const response = { 'hello': 'hello!'}
-    res.json(response)
-  } catch (err) {
-    next(err)
-  }
-})
-
-router.get('/twitterUsers', async (req, res, next) => {
-  try {
-    const response = await Tweet.aggregate('twitterName', 'DISTINCT', {
-      plain: false
-    })
     res.json(response)
   } catch (err) {
     next(err)

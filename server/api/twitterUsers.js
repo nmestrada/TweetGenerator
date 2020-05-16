@@ -1,6 +1,8 @@
 const router = require('express').Router()
 //const axios = require('axios')
-const {TwitterUser} = require('../db')
+const {TwitterUser} = require('../db/index')
+
+//api/twitterUsers
 
 router.get('/', async (req, res, next) => {
   try {
@@ -12,3 +14,5 @@ router.get('/', async (req, res, next) => {
     next(err)
   }
 })
+
+module.exports = router
