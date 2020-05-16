@@ -1,18 +1,20 @@
 const db = require('../server/db')
-const User = require('../server/db/users')
-const Tweet = require('../server/db/tweets')
-const GeneratedTweet = require('../server/db/generatedTweets')
+const {Tweet, TwitterUser} = require('../server/db/index')
 const parsedTrumpTweets = require('./tweetParser')
 
 async function seed() {
   await db.sync({force: true})
   console.log('db synced!')
 
+  const twitterUser = await TwitterUser.create({
+    twitterName: 'realdonaldtrump'
+  })
   const rows = await Promise.all(
     parsedTrumpTweets.map(tweet => Tweet.create(tweet))
   )
-
-  console.log(`seeded ${rows.length} rows`)
+  //add associations
+  await Promise.all(rows.map(row => row.setTwitterUser(twitterUser)))
+  console.log(`seeded ${rows.length} rows successfully`)
   console.log(`seeded successfully`)
 }
 

@@ -8,7 +8,7 @@ const User = require('./users')
  */
 
 TwitterUser.hasMany(Tweet)
-Tweet.belongsTo(TwitterUser)
+Tweet.belongsTo(TwitterUser, {as: 'twitterUser'})
 
 TwitterUser.hasMany(GeneratedTweet)
 GeneratedTweet.belongsTo(TwitterUser)

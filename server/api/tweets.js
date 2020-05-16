@@ -1,7 +1,6 @@
 const router = require('express').Router()
 const axios = require('axios')
-const Tweet = require('../db/tweets')
-const Sequelize = require('sequelize')
+const {Tweet} = require('../db')
 
 // matches GET requests to /api/tweets/
 //global constants:
