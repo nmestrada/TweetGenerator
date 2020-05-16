@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize')
-const db = require('./index')
+const db = require('../db')
 //table of tweets, need to have sn attached to them
 //need to create a validation that depends on another field
 //different twitter users can have same tweetdates, but not the same user

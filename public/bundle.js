@@ -127,14 +127,14 @@ var Root = function Root() {
   function () {
     var _ref = _asyncToGenerator(
     /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee() {
+    regeneratorRuntime.mark(function _callee(twitterName) {
       return regeneratorRuntime.wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
               _context.t0 = setTweet;
               _context.next = 3;
-              return _markov_generatePost__WEBPACK_IMPORTED_MODULE_2___default()();
+              return _markov_generatePost__WEBPACK_IMPORTED_MODULE_2___default()(twitterName);
 
             case 3:
               _context.t1 = _context.sent;
@@ -148,7 +148,7 @@ var Root = function Root() {
       }, _callee);
     }));
 
-    return function generateTweet() {
+    return function generateTweet(_x) {
       return _ref.apply(this, arguments);
     };
   }();
@@ -157,7 +157,9 @@ var Root = function Root() {
     id: "container"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, "Welcome to Tweet Generator!"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, "Enter a twitter username to get started!"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_UsernameForm__WEBPACK_IMPORTED_MODULE_1__["default"], null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h2", null, "Pre-loaded Twitter Users"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h4", null, "realDonaldTrump"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, tweet), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
     type: "button",
-    onClick: generateTweet
+    onClick: function onClick() {
+      return generateTweet('realdonaldtrump');
+    }
   }, "Generate Tweet"));
 };
 

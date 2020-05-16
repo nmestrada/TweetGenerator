@@ -1,6 +1,7 @@
 const router = require('express').Router()
 const axios = require('axios')
 const Tweet = require('../db/tweets')
+const Sequelize = require('sequelize')
 
 // matches GET requests to /api/tweets/
 //global constants:
@@ -21,23 +22,31 @@ router.get('/', async function(req, res, next) {
     next(err)
   }
 })
-router.get('/:twitterName', async function(req, res, next) {
+
+router.get('/twitterUsers', async (req, res, next) => {
   try {
-    //req.username
-    console.log(req.params)
-    //database is case sensitive, req.params turns everything in lowercase which is fine
-    //turn twitter name in lowercase for all twitter users, have to re seed?
-    const response = await Tweet.findAll({
-      where: {
-        twitterName: 'realDonaldTrump'
-      }
+    const response = await Tweet.aggregate('twitterName', 'DISTINCT', {
+      plain: false
     })
-    //const response = { 'hello': 'hello!'}
     res.json(response)
   } catch (err) {
     next(err)
   }
 })
+
+router.get('/:twitterName', async function(req, res, next) {
+  try {
+    const response = await Tweet.findAll({
+      where: {
+        twitterName: req.params.twitterName
+      }
+    })
+    res.json(response)
+  } catch (err) {
+    next(err)
+  }
+})
+
 // matches POST requests to /api/tweets/
 router.post('/', async function(req, res, next) {
   const username = req.body.username
@@ -45,7 +54,7 @@ router.post('/', async function(req, res, next) {
     //get req twitter api
     const {data} = await axios({
       method: 'get',
-      url: `${getReqUrl}screen_name=${username}&count=2trim_user=true&tweet_mode=extended`,
+      url: `${getReqUrl}screen_name=${username}&count=10trim_user=true&tweet_mode=extended`,
       headers
     })
     console.log('after post request', data)

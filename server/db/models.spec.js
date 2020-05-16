@@ -1,5 +1,5 @@
 const {expect} = require('chai')
-const db = require('./index')
+const db = require('../db')
 const Tweet = require('./tweets')
 //const seed = require('../../seed')
 
