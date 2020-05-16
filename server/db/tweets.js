@@ -20,16 +20,24 @@ const Tweet = db.define(
       type: Sequelize.DATE,
       allowNull: false
     }
-  },
-  //unique constraint on multple columns need to add test
-  {
-    indexes: [
-      {
-        unique: true,
-        fields: ['tweetDate', 'twitterName']
-      }
-    ]
   }
+  //unique constraint on multple columns need to add test
+  // {
+  //   indexes: [
+  //     {
+  //       unique: true,
+  //       fields: ['tweetDate', 'twitterName']
+  //     }
+  //   ]
+  // }
 )
+
+/**
+ * hooks
+ */
+
+Tweet.beforeCreate(tweet => {
+  tweet.twitterName = tweet.twitterName.toLowerCase()
+})
 
 module.exports = Tweet

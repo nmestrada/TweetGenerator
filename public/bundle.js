@@ -309,14 +309,15 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
 //need to get tweets from database
-var axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+var axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js"); //twitterName is passed down , a lot!, make this less complex...
+
 
 var fetchTweets =
 /*#__PURE__*/
 function () {
   var _ref = _asyncToGenerator(
   /*#__PURE__*/
-  regeneratorRuntime.mark(function _callee() {
+  regeneratorRuntime.mark(function _callee(twitterName) {
     var _ref2, data;
 
     return regeneratorRuntime.wrap(function _callee$(_context) {
@@ -325,7 +326,7 @@ function () {
           case 0:
             _context.prev = 0;
             _context.next = 3;
-            return axios.get('http://localhost:1337/api/tweets');
+            return axios.get("/api/tweets/".concat(twitterName));
 
           case 3:
             _ref2 = _context.sent;
@@ -345,7 +346,7 @@ function () {
     }, _callee, null, [[0, 8]]);
   }));
 
-  return function fetchTweets() {
+  return function fetchTweets(_x) {
     return _ref.apply(this, arguments);
   };
 }();
@@ -360,7 +361,7 @@ var parseTweetArray =
 function () {
   var _ref3 = _asyncToGenerator(
   /*#__PURE__*/
-  regeneratorRuntime.mark(function _callee2() {
+  regeneratorRuntime.mark(function _callee2(twitterName) {
     var tweetWordsArray, tweetArray;
     return regeneratorRuntime.wrap(function _callee2$(_context2) {
       while (1) {
@@ -369,7 +370,7 @@ function () {
             _context2.prev = 0;
             tweetWordsArray = [];
             _context2.next = 4;
-            return fetchTweets();
+            return fetchTweets(twitterName);
 
           case 4:
             tweetArray = _context2.sent;
@@ -391,7 +392,7 @@ function () {
     }, _callee2, null, [[0, 9]]);
   }));
 
-  return function parseTweetArray() {
+  return function parseTweetArray(_x2) {
     return _ref3.apply(this, arguments);
   };
 }();
@@ -406,7 +407,7 @@ var generateWordPairs =
 function () {
   var _ref4 = _asyncToGenerator(
   /*#__PURE__*/
-  regeneratorRuntime.mark(function _callee3() {
+  regeneratorRuntime.mark(function _callee3(twitterName) {
     var obj, array, i, element;
     return regeneratorRuntime.wrap(function _callee3$(_context3) {
       while (1) {
@@ -414,7 +415,7 @@ function () {
           case 0:
             obj = {};
             _context3.next = 3;
-            return parseTweetArray();
+            return parseTweetArray(twitterName);
 
           case 3:
             _context3.t0 = _context3.sent;
@@ -466,7 +467,7 @@ function () {
     }, _callee3);
   }));
 
-  return function generateWordPairs() {
+  return function generateWordPairs(_x3) {
     return _ref4.apply(this, arguments);
   };
 }(); //generateWordPairs();
@@ -536,14 +537,14 @@ function writeLine(obj, numWords) {
 } // console.log(writeLine(textArray,10));
 
 
-function generatePoem(_x) {
+function generatePoem(_x4, _x5) {
   return _generatePoem.apply(this, arguments);
 }
 
 function _generatePoem() {
   _generatePoem = _asyncToGenerator(
   /*#__PURE__*/
-  regeneratorRuntime.mark(function _callee4(numLines) {
+  regeneratorRuntime.mark(function _callee4(numLines, twitterName) {
     var poem, object, i, num;
     return regeneratorRuntime.wrap(function _callee4$(_context4) {
       while (1) {
@@ -552,7 +553,7 @@ function _generatePoem() {
             poem = ''; //make obj here with generateWordPairs, but this is an async function
 
             _context4.next = 3;
-            return generateWordPairs();
+            return generateWordPairs(twitterName);
 
           case 3:
             object = _context4.sent;
@@ -575,8 +576,8 @@ function _generatePoem() {
   return _generatePoem.apply(this, arguments);
 }
 
-var post = function post() {
-  return generatePoem(3);
+var post = function post(twitterName) {
+  return generatePoem(3, twitterName);
 };
 
 module.exports = post;

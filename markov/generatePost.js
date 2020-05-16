@@ -1,8 +1,10 @@
 //need to get tweets from database
 const axios = require('axios')
-const fetchTweets = async () => {
+//twitterName is passed down , a lot!, make this less complex...
+
+const fetchTweets = async twitterName => {
   try {
-    const {data} = await axios.get('http://localhost:1337/api/tweets')
+    const {data} = await axios.get(`/api/tweets/${twitterName}`)
     return data
   } catch (err) {
     console.log(err.message)
@@ -12,10 +14,10 @@ const fetchTweets = async () => {
  * parseTweetArray async function that runs fetch tweets
  * returns type: array
  */
-const parseTweetArray = async () => {
+const parseTweetArray = async twitterName => {
   try {
     let tweetWordsArray = []
-    const tweetArray = await fetchTweets()
+    const tweetArray = await fetchTweets(twitterName)
     tweetArray.forEach(tweet => {
       tweetWordsArray = tweetWordsArray.concat(tweet.content.split(' '))
     })
@@ -29,9 +31,9 @@ const parseTweetArray = async () => {
  * generateWords: Args : parsed array of tweet words
  * returns: {tweetObj: {}}
  */
-let generateWordPairs = async () => {
+let generateWordPairs = async twitterName => {
   let obj = {}
-  const array = (await parseTweetArray()) || []
+  const array = (await parseTweetArray(twitterName)) || []
   //let array = parseText(string);
   for (let i = 0; i < array.length - 1; i++) {
     let element = array[i]
@@ -116,10 +118,10 @@ function writeLine(obj, numWords) {
 
 // console.log(writeLine(textArray,10));
 
-async function generatePoem(numLines) {
+async function generatePoem(numLines, twitterName) {
   let poem = ''
   //make obj here with generateWordPairs, but this is an async function
-  let object = await generateWordPairs()
+  let object = await generateWordPairs(twitterName)
   for (let i = 1; i <= numLines; i++) {
     let num = 2 + Math.floor(Math.random() * 6)
     poem = `${poem} ${writeLine(object, num)}`
@@ -128,6 +130,6 @@ async function generatePoem(numLines) {
   return poem
 }
 
-const post = () => generatePoem(3)
+const post = twitterName => generatePoem(3, twitterName)
 
 module.exports = post

@@ -21,6 +21,23 @@ router.get('/', async function(req, res, next) {
     next(err)
   }
 })
+router.get('/:twitterName', async function(req, res, next) {
+  try {
+    //req.username
+    console.log(req.params)
+    //database is case sensitive, req.params turns everything in lowercase which is fine
+    //turn twitter name in lowercase for all twitter users, have to re seed?
+    const response = await Tweet.findAll({
+      where: {
+        twitterName: 'realDonaldTrump'
+      }
+    })
+    //const response = { 'hello': 'hello!'}
+    res.json(response)
+  } catch (err) {
+    next(err)
+  }
+})
 // matches POST requests to /api/tweets/
 router.post('/', async function(req, res, next) {
   const username = req.body.username
