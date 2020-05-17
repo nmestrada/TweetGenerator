@@ -272,21 +272,29 @@ var UsernameForm = function UsernameForm() {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
+              _context.prev = 0;
               event.preventDefault();
-              _context.next = 3;
+              _context.next = 4;
               return axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('/api/tweets', {
                 username: username
               });
 
-            case 3:
-              setUsername('');
-
             case 4:
+              setUsername('');
+              _context.next = 10;
+              break;
+
+            case 7:
+              _context.prev = 7;
+              _context.t0 = _context["catch"](0);
+              console.log(_context.t0.message);
+
+            case 10:
             case "end":
               return _context.stop();
           }
         }
-      }, _callee);
+      }, _callee, null, [[0, 7]]);
     }));
 
     return function handleSubmit(_x) {
@@ -396,15 +404,24 @@ var store = Object(redux__WEBPACK_IMPORTED_MODULE_0__["createStore"])(reducer, O
 /*!**************************************!*\
   !*** ./client/redux/twitterUsers.js ***!
   \**************************************/
-/*! exports provided: fetchTwitterUsers, default */
+/*! exports provided: fetchTwitterUsers, addTwitterUser, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fetchTwitterUsers", function() { return fetchTwitterUsers; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addTwitterUser", function() { return addTwitterUser; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return twitterNameReducer; });
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
@@ -418,6 +435,13 @@ var setTwitterUsers = function setTwitterUsers(twitterUsers) {
   return {
     type: SET_TWITTER_NAMES,
     twitterUsers: twitterUsers
+  };
+};
+
+var addToTwitterUsers = function addToTwitterUsers(twitterUser) {
+  return {
+    type: ADD_TO_TWITTER_NAMES,
+    twitterUser: twitterUser
   };
 }; //thunks
 
@@ -464,6 +488,51 @@ var fetchTwitterUsers = function fetchTwitterUsers() {
       };
     }()
   );
+};
+var addTwitterUser = function addTwitterUser(twitterName) {
+  return (
+    /*#__PURE__*/
+    function () {
+      var _ref3 = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee2(dispatch) {
+        var _ref4, data;
+
+        return regeneratorRuntime.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.prev = 0;
+                _context2.next = 3;
+                return axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/api/twitterUsers', {
+                  twitterName: twitterName
+                });
+
+              case 3:
+                _ref4 = _context2.sent;
+                data = _ref4.data;
+                dispatch(addToTwitterUsers(data));
+                _context2.next = 11;
+                break;
+
+              case 8:
+                _context2.prev = 8;
+                _context2.t0 = _context2["catch"](0);
+                console.log(_context2.t0.message);
+
+              case 11:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, null, [[0, 8]]);
+      }));
+
+      return function (_x2) {
+        return _ref3.apply(this, arguments);
+      };
+    }()
+  );
 }; //reducer
 
 function twitterNameReducer() {
@@ -475,7 +544,7 @@ function twitterNameReducer() {
       return action.twitterUsers;
 
     case ADD_TO_TWITTER_NAMES:
-      return action.twitterUsers;
+      return [].concat(_toConsumableArray(state), [action.twitterUser]);
 
     default:
       return state;

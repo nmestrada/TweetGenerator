@@ -4,7 +4,8 @@ const db = require('../db')
 const TwitterUser = db.define('twitter-user', {
   twitterName: {
     type: Sequelize.TEXT,
-    allowNUll: false
+    allowNUll: false,
+    ignoreDuplicates: true
   },
   searchCount: {
     type: Sequelize.INTEGER,

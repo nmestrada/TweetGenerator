@@ -3,10 +3,14 @@ import axios from 'axios'
 const UsernameForm = () => {
   const [username, setUsername] = useState('')
   const handleSubmit = async event => {
-    event.preventDefault()
-    await axios.post('/api/tweets', {username})
-    //clear form
-    setUsername('')
+    try {
+      event.preventDefault()
+      await axios.post('/api/tweets', {username})
+      //clear form
+      setUsername('')
+    } catch (err) {
+      console.log(err.message)
+    }
   }
   const handleChange = event => {
     setUsername(event.target.value)

@@ -1,6 +1,6 @@
 const router = require('express').Router()
 const axios = require('axios')
-const {Tweet} = require('../db/index')
+const {Tweet, TwitterUser, Association} = require('../db/index')
 
 // matches GET requests to /api/tweets/
 //global constants:
@@ -48,14 +48,19 @@ router.post('/', async function(req, res, next) {
     console.log('after post request', data)
     const rows = await Promise.all(
       data.map(tweet =>
-        Tweet.create({
-          twitterName: tweet.user.screen_name,
-          content: tweet.full_text,
-          tweetDate: tweet.created_at
-        })
+        Tweet.create(
+          {
+            twitterName: tweet.user.screen_name,
+            content: tweet.full_text,
+            tweetDate: tweet.created_at
+          },
+          {
+            include: [Association]
+          }
+        )
       )
     )
-    console.log('after tweet request', rows)
+    console.log(`${rows.length} created`)
     res.sendStatus(201)
   } catch (err) {
     next(err)

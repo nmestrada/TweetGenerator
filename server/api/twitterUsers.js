@@ -14,5 +14,17 @@ router.get('/', async (req, res, next) => {
     next(err)
   }
 })
+router.post('/', async (req, res, next) => {
+  console.log(req.body)
+  try {
+    //need to add check here to make sure that user entered a valid twitter username
+    const response = await TwitterUser.create({
+      twitterName: req.body.twitterName
+    })
+    res.json(response)
+  } catch (err) {
+    next(err)
+  }
+})
 
 module.exports = router

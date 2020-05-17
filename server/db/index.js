@@ -8,7 +8,7 @@ const User = require('./users')
  */
 
 TwitterUser.hasMany(Tweet)
-Tweet.belongsTo(TwitterUser, {as: 'twitterUser'})
+const Association = Tweet.belongsTo(TwitterUser, {as: 'twitterUser'})
 
 TwitterUser.hasMany(GeneratedTweet)
 GeneratedTweet.belongsTo(TwitterUser)
@@ -17,5 +17,6 @@ module.exports = {
   User,
   TwitterUser,
   GeneratedTweet,
-  Tweet
+  Tweet,
+  Association
 }

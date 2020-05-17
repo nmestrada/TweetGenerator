@@ -9,6 +9,11 @@ const setTwitterUsers = twitterUsers => ({
   type: SET_TWITTER_NAMES,
   twitterUsers
 })
+
+const addToTwitterUsers = twitterUser => ({
+  type: ADD_TO_TWITTER_NAMES,
+  twitterUser
+})
 //thunks
 export const fetchTwitterUsers = () => async dispatch => {
   try {
@@ -19,6 +24,14 @@ export const fetchTwitterUsers = () => async dispatch => {
   }
 }
 
+export const addTwitterUser = twitterName => async dispatch => {
+  try {
+    const {data} = await axios.post('/api/twitterUsers', {twitterName})
+    dispatch(addToTwitterUsers(data))
+  } catch (err) {
+    console.log(err.message)
+  }
+}
 //reducer
 
 export default function twitterNameReducer(state = [], action) {
@@ -26,7 +39,7 @@ export default function twitterNameReducer(state = [], action) {
     case SET_TWITTER_NAMES:
       return action.twitterUsers
     case ADD_TO_TWITTER_NAMES:
-      return action.twitterUsers
+      return [...state, action.twitterUser]
     default:
       return state
   }
