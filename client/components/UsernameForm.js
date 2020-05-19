@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import axios from 'axios'
 import {useDispatch} from 'react-redux'
-import {addTwitterUser} from '../redux/twitterUsers'
+import {fetchTwitterUsers} from '../redux/twitterUsers'
 
 const UsernameForm = () => {
   const [username, setUsername] = useState('')
@@ -12,7 +12,7 @@ const UsernameForm = () => {
       await axios.post('/api/tweets', {username})
       //clear form
       setUsername('')
-      dispatch(addTwitterUser(username))
+      dispatch(fetchTwitterUsers())
     } catch (err) {
       console.log(err.message)
     }

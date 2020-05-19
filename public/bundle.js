@@ -287,7 +287,7 @@ var UsernameForm = function UsernameForm() {
 
             case 4:
               setUsername('');
-              dispatch(Object(_redux_twitterUsers__WEBPACK_IMPORTED_MODULE_3__["addTwitterUser"])(username));
+              dispatch(Object(_redux_twitterUsers__WEBPACK_IMPORTED_MODULE_3__["fetchTwitterUsers"])());
               _context.next = 11;
               break;
 
