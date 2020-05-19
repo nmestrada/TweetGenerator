@@ -1,13 +1,18 @@
 import React, {useState} from 'react'
 import axios from 'axios'
+import {useDispatch} from 'react-redux'
+import {addTwitterUser} from '../redux/twitterUsers'
+
 const UsernameForm = () => {
   const [username, setUsername] = useState('')
+  const dispatch = useDispatch()
   const handleSubmit = async event => {
     try {
       event.preventDefault()
       await axios.post('/api/tweets', {username})
       //clear form
       setUsername('')
+      dispatch(addTwitterUser(username))
     } catch (err) {
       console.log(err.message)
     }

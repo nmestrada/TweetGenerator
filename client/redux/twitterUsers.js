@@ -26,7 +26,7 @@ export const fetchTwitterUsers = () => async dispatch => {
 
 export const addTwitterUser = twitterName => async dispatch => {
   try {
-    const {data} = await axios.post('/api/twitterUsers', {twitterName})
+    const {data} = await axios.get(`/api/twitterUsers/${twitterName}`)
     dispatch(addToTwitterUsers(data))
   } catch (err) {
     console.log(err.message)
