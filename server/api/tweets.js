@@ -45,7 +45,7 @@ router.post('/', async function(req, res, next) {
       url: `${getReqUrl}screen_name=${username}&count=10trim_user=true&tweet_mode=extended`,
       headers
     })
-    console.log('after post request', data)
+    //console.log('after post request', data)
     const rows = await Promise.all(
       data.map(tweet =>
         Tweet.create({
@@ -61,7 +61,8 @@ router.post('/', async function(req, res, next) {
       const twitterUser = await TwitterUser.findOrCreate({
         where: {twitterName: username}
       })
-      await Promise.all(rows.map(row => row.setTwitterUser(twitterUser)))
+      console.log('in post request', twitterUser[0])
+      await Promise.all(rows.map(row => row.setTwitterUser(twitterUser[0])))
     } else {
       console.log('data', data)
     }

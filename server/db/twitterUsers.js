@@ -9,7 +9,6 @@ const TwitterUser = db.define('twitter-user', {
   },
   searchCount: {
     type: Sequelize.INTEGER,
-    allowNull: false,
     defaultValue: 0
   }
 })
