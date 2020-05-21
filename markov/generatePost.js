@@ -11,6 +11,23 @@ const fetchTweets = async twitterName => {
   }
 }
 /**
+ * parseTweet
+ * params: string : Tweet
+ * return parsed tweet
+ */
+const parseTweet = tweet => {
+  let TweetArr = tweet.split(' ')
+  let result = TweetArr.map(word => {
+    if (word.includes('@') || word.includes('/') || word.includes('&')) {
+      word = ''
+    } else {
+      word = word.toLowerCase().replace(/[)(?!,.]/g, '')
+    }
+    return word
+  })
+  return result.filter(word => word !== '')
+}
+/**
  * parseTweetArray async function that runs fetch tweets
  * returns type: array
  */
@@ -19,7 +36,7 @@ const parseTweetArray = async twitterName => {
     let tweetWordsArray = []
     const tweetArray = await fetchTweets(twitterName)
     tweetArray.forEach(tweet => {
-      tweetWordsArray = tweetWordsArray.concat(tweet.content.split(' '))
+      tweetWordsArray = tweetWordsArray.concat(parseTweet(tweet.content))
     })
     return tweetWordsArray
   } catch (err) {

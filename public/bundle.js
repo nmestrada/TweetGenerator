@@ -612,6 +612,28 @@ function () {
   };
 }();
 /**
+ * parseTweet
+ * params: string : Tweet
+ * return parsed tweet
+ */
+
+
+var parseTweet = function parseTweet(tweet) {
+  var TweetArr = tweet.split(' ');
+  var result = TweetArr.map(function (word) {
+    if (word.includes('@') || word.includes('/') || word.includes('&')) {
+      word = '';
+    } else {
+      word = word.toLowerCase().replace(/[)(?!,.]/g, '');
+    }
+
+    return word;
+  });
+  return result.filter(function (word) {
+    return word !== '';
+  });
+};
+/**
  * parseTweetArray async function that runs fetch tweets
  * returns type: array
  */
@@ -636,7 +658,7 @@ function () {
           case 4:
             tweetArray = _context2.sent;
             tweetArray.forEach(function (tweet) {
-              tweetWordsArray = tweetWordsArray.concat(tweet.content.split(' '));
+              tweetWordsArray = tweetWordsArray.concat(parseTweet(tweet.content));
             });
             return _context2.abrupt("return", tweetWordsArray);
 
