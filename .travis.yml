@@ -1,30 +1,27 @@
 language: node_js
 node_js:
-  - node # uses most recent stable node version
+- node
 services:
-  - postgresql # starts up postgres
+- postgresql
 addons:
-  postgresql: '10' # recent postgres version on Travis
-dist: xenial # uses xenial environment
+  postgresql: '10'
+dist: xenial
 notifications:
   email:
-    on_success: change # default: change (only when going from broken to fixed)
-    on_failure: always # default: always (which is annoying, as it should be)
+    on_success: change
+    on_failure: always
 install:
-  - npm ci # faster, goes only from package-lock
+- npm ci
 before_script:
-  - psql -c 'create database "tweetgenerator-test";' -U postgres # remember to change this name if you change it elsewhere (e.g. package.json)
+- psql -c 'create database "tweetgenerator-test";' -U postgres
 script:
-  - npm test # test the code
-  - npm run build-client # make the bundle
-before_deploy: # omit node_modules, since we set skip_cleanup below
-  - rm -rf node_modules
-deploy: # see README for details on these keys
-  # prevents travis from deleting the build
+- npm test
+- npm run build-client
+before_deploy:
+- rm -rf node_modules
+deploy:
   skip_cleanup: true
   provider: heroku
-  # app should be your heroku app name; see README
   app: awesome-tweet-generator
-  # the secure key indicates an encrypted value; see README
   api_key:
-    secure: NvP89YgSL+TV9R6OvDRElk7ezyUgUJ+EmZl+9bpOVP/4ANhnv6g5uuvDGWHMIjW0zYXxg7xY1KYMcey44wWyhdQthLLDAiEdN9CO1orR7M/sNA0zcaVTsQ9bs8ilWW1/R+DPn3EEFrUvrSsWam8bfr8t5LgARzslzttxXt4oaPW8Ud8nPTdwcHu+rKft/tOKzxiph44SDEsIOL4ZXTEUIWH25hqoksp7Ssqf6dgV0UEv549xOhfkliOeWGo/Ihx7JvQDdEhT/3dbhZnZH82HOCKR71HBaqe6ytVdKviJDQzxx1amZihHC8hI2yEi/c+L1vK6ODfo/lLMHIuJRNPLbKZWQB0/e1VsadDVXQOxT9jlELrJCPgZIebQVaemq3ZN8kpyH0xcirbNUMqCov9Nah5OZAjdP4GEuXkMOqrhStL3QOAeJqvtdshLsZ9+m//KdLkRKlNjzoe3dOv2aIf1fYOsoR5CZ12U/QvT90qLrGhAclaL+z9DLik/cFv9le4R+NW+MFBXsUjuEDCcGRyBVkvZ0P1lO6GW+9rj0zR4ShJ2Dxd6diXF/Usp637eH7MqH5ACjSCQwcuxMcbqik2lSUZ2Gl9muvlZrFy9jiTnLKoSL2nE0TuvsOO35FyLameDPIiRWEo3slDe1JBv63PleiHxVssr4SYitchzNzz8KOY=
+    secure: GYFIq0WcFh2RhEwwk7cF+53sovsgzjBswTC4YS0QpFLDUx14F7cZO18ZznnCb0/YGtTdNpItBKGpDAxAA/XxE7YB/gtMCrsAVrEwAm6MzKr60fqigRbB+ALgwhxINuQ1GqXbE58A8Jp3ycCce4qLHBAYrZh1IjpvncgRpl+e7rUpnm1UkBs1OOokg2msm7xUSWsDh907iXrVqv5MHGt+IUsW6+L5m7QvgQqyO5EKxzT8UkpRn7mxNRbG5GEsy+UwmJi2Cyl952paeC9Gn2b4fB/GnH9yUJJRfg1hjyF1lksbhPr5M7IHci23uHzuQpEq/Lc37g6DWKbyiIsVa2BYYWwiE5xauRSwNqGpF95kL40OHwF72DgqQLVN0yvc0cdf7zSG/SJeS8bkeblU+huHbkME1WXTz2A4iCN6PPjjD8NpydIpbJFGnDbH7mFoRmsWU+nzi22BYiNdOCZ1j8zqzbJ1Q87Aik6kOLEwvgr8EnMlnHaj65EI5x9ksp8rjB1eHLy6VQDHD2gk7/Yd1z6QEEKA8nwKIXY1kkZSf5deYuhDPA8sSEHGHG5Xvf6VK8q2J5kwuPzm00u8hkWS9ZhVt7PmRDD0J7TKGOv4wtO23GlM8x19Tr/ySI8zwR04wrO+e22zapGxgZIUIcE0p8BFF4SPFxBsoual/HMeD+WjEXM=
